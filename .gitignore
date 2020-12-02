@@ -1,0 +1,11 @@
+/shelf/
+/.idea/workspace.xml
+.idea/
+gradle/
+.idea
+.gradle
+build
+caches/
+daemon/
+native/
+wrapper/
