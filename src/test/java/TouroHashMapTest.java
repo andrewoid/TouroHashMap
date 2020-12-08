@@ -13,7 +13,7 @@ public class TouroHashMapTest {
     @Test
     public void put() {
         // given
-        TouroHashMap map = new TouroHashMap();
+        TouroHashMap<String, String> map = new TouroHashMap<>();
 
         // when
         map.put("HELLO", "WORLD");
@@ -22,8 +22,8 @@ public class TouroHashMapTest {
         for (List<TouroHashMap.Entry> list: map.buckets) {
             for (TouroHashMap.Entry entry : list) {
                 if (entry != null &&
-                        entry.word.equals("HELLO") &&
-                        entry.definition.equals("WORLD")) {
+                        entry.key.equals("HELLO") &&
+                        entry.value.equals("WORLD")) {
                     return;
                 }
             }
@@ -34,7 +34,7 @@ public class TouroHashMapTest {
     @Test
     public void get() {
         // given
-        TouroHashMap map = new TouroHashMap();
+        TouroHashMap<String,String> map = new TouroHashMap<>();
         TouroHashMap.Entry entry = new TouroHashMap.Entry("HELLO", "WORLD");
         int hashcode = entry.hashCode();
         map.buckets[hashcode % TouroHashMap.BUCKET_SIZE].add(entry);
@@ -49,7 +49,7 @@ public class TouroHashMapTest {
     @Test
     public void get_null() {
         // given
-        TouroHashMap map = new TouroHashMap();
+        TouroHashMap<String,String> map = new TouroHashMap<>();
 
         // when
         String definition = map.get("HELLO");
@@ -61,7 +61,7 @@ public class TouroHashMapTest {
     @Test
     public void get_1000Words() {
         // given
-        TouroHashMap map = new TouroHashMap();
+        TouroHashMap<String,String> map = new TouroHashMap<>();
 
         // when
         for (int i=0 ;i<1000; i++) {
@@ -74,7 +74,7 @@ public class TouroHashMapTest {
     @Test
     public void dictionaryFile() throws FileNotFoundException {
         // given
-        TouroHashMap map = new TouroHashMap();
+        TouroHashMap<String,String> map = new TouroHashMap<>();
         File file = new File("dictionary.txt");
         Scanner scanner = new Scanner(file);
         while (scanner.hasNext()) {

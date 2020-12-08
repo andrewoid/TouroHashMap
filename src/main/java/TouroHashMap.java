@@ -2,17 +2,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class TouroHashMap {
+public class TouroHashMap<K,T> {
 
     public static final int BUCKET_SIZE = 1024;
 
-    static class Entry {
-        String word;
-        String definition;
+    static class Entry<K,T> {
+        K key;
+        T value;
 
-        public Entry(String word, String definition) {
-            this.word = word;
-            this.definition = definition;
+        public Entry(K key, T value) {
+            this.key = key;
+            this.value = value;
         }
 
         @Override
@@ -20,19 +20,19 @@ public class TouroHashMap {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Entry entry = (Entry) o;
-            return Objects.equals(word, entry.word);
+            return Objects.equals(key, entry.key);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(word);
+            return Objects.hash(key);
         }
 
         @Override
         public String toString() {
             return "Entry{" +
-                    "word='" + word + '\'' +
-                    ", definition='" + definition + '\'' +
+                    "key=" + key +
+                    ", value=" + value +
                     '}';
         }
     }
@@ -46,22 +46,22 @@ public class TouroHashMap {
         }
     }
 
-    public void put(String word, String definition) {
-        Entry entry = new Entry(word, definition);
+    public void put(K key, T value) {
+        Entry entry = new Entry(key, value);
         int hashCode = entry.hashCode();
         int index = Math.abs(hashCode) % BUCKET_SIZE;
         buckets[index].add(entry);
     }
 
-    public String get(String word) {
-        Entry find = new Entry(word, "");
-        int hashCode = find.hashCode();
+    public T get(K key) {
+        int hashCode = Objects.hash(key);
         int bucketIndex = Math.abs(hashCode) % BUCKET_SIZE;
-        int listIndex = buckets[bucketIndex].indexOf(find);
-        if (listIndex == -1) {
-            return null;
+        for ( Entry entry : buckets[bucketIndex] ) {
+            if (entry.key.equals(key)) {
+                return (T) entry.value;
+            }
         }
-        return buckets[bucketIndex].get(listIndex).definition;
+        return null;
     }
 
 }
